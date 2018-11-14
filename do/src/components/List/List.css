@@ -1,0 +1,38 @@
+.list {
+    width: 272px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    overflow: hidden;
+    height: max-content;
+}
+
+.list > .header {
+    height: 40px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 36px;
+    align-items: center;
+    justify-items: start;
+}
+
+.list > .header h3 {
+    padding-left: 15px;
+    margin: 0;
+    font-size: 14px;
+}
+
+.list > .cards-wrapper {
+    align-self: start;
+    width: calc(100% - 8px);
+    margin: 0 4px;
+}
+
+.list > .cards-wrapper > .cards {
+    display: grid;
+    /* grid-template-rows: 32px; */
+    grid-auto-rows: 32px;
+    grid-auto-flow: row;
+    grid-row-gap: 8px;
+    margin-bottom: 8px;
+}

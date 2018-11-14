@@ -1,0 +1,130 @@
+.board {
+    background-color: rgb(0, 174, 204);
+    min-height: 100vh;
+    min-width: 100vw;
+    display: grid;
+    grid-template-rows: 40px 48px auto;
+}
+
+.board > header {
+    height: 32px;
+    padding: 4px 0;
+    background-color: rgba(0,0,0,.15);
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 80px 1fr;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.board > header .left-header {
+    display: grid;
+    grid-template-columns: 32px 90px auto;
+    grid-column-gap: 4px;
+    padding-left: 4px;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.board > header .logo {
+    margin: 0;
+    background-image: url("/images/TrelloLogo.png");
+    background-position: 100% 0;
+    background-repeat: no-repeat;
+    background-size: 80px 30px;
+    width: 80px;
+    height: 30px;
+    opacity: .5;
+    display: block;
+    box-sizing: border-box;
+}
+
+.board > header .logo > span {
+    width: 1px;
+    height: 1px;
+    top: -10px;
+    position: absolute;
+    overflow: hidden;
+}
+
+.board > header .right-header {
+    display: grid;
+    grid-template-columns: 32px 32px 32px 32px;
+    grid-column-gap: 4px;
+    padding-right: 4px;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.board > header .logo:hover {
+    opacity: .8;
+}
+
+.board > .sub-header {
+    display: grid;
+    padding: 8px;
+    height: 32px;
+    grid-template-columns: 80% 20%;
+}
+
+.board > .sub-header .left-sub-header {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+
+.board > .sub-header .left-sub-header > a {
+    margin-right: 4px;
+}
+
+.board > .sub-header .left-sub-header > .title {
+    height: 100%;
+    padding: 0 2px;
+    text-align: left;
+}
+
+.board > .sub-header .left-sub-header > .title > span {
+    margin: 0;
+    padding: 0 4px 0 4px;
+    font-weight: 700;
+    line-height: 32px;
+}
+
+.board > .sub-header .divider {
+    border-left: 1px solid rgba(255,255,255,.2);
+    height: 16px;
+    margin: 8px 4px 0 0;
+}
+
+.board > .sub-header .left-sub-header > .team > span {
+    letter-spacing: 1px;
+}
+
+.board > .sub-header .invite {
+    border-radius: 50%;
+}
+
+.board > .sub-header .right-sub-header {
+    justify-self: end;
+}
+
+.board > .content-wrapper {
+    overflow: hidden;
+    width: calc(100% - 16px);
+    height: calc(100% - 8px);
+    margin: 0px 8px 8px 8px;
+}
+.board > .content-wrapper > .content {
+    overflow-x: auto;
+    display: grid;
+    grid-template-rows: max-content;
+    grid-auto-columns: 272px;
+    grid-auto-flow: column;
+    grid-column-gap: 8px;
+}

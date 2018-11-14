@@ -1,0 +1,50 @@
+.modal {
+    position: absolute;
+    background-color: #fff;
+    min-width: 200px;
+    min-height: 50px;
+    z-index: 99;
+    color: #17394d;
+    border-radius: 3px;
+    box-shadow:
+        0 8px 16px -4px rgba(9, 45, 66, .25),
+        0 0 0 1px rgba(9, 45, 66, .08);
+}
+
+.modal > .modal-header {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    height: 40px;
+    width: 100%;
+    justify-content: center;
+}
+
+.modal > .modal-header > span {
+    color: #6b808c;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.modal > .modal-header > a {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+
+.modal .modal-divider {
+    width: 100%;
+    display: flex;
+    height: 1px;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.modal .modal-divider > .border {
+    background-color: rgba(9,45,66,.13);
+    width: calc(100% - 24px);
+    height: 100%;
+}
