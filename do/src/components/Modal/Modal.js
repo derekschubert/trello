@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './Modal.css';
 
+import UserIcon from '../UserIcon';
 import Button from '../Button';
-
-const ModalContext = React.createContext();
+import Icon from '../Icon';
 
 export default class Modal extends Component {
     constructor(props) {
@@ -11,16 +11,17 @@ export default class Modal extends Component {
         this.state = { listener: false }
     }
 
-    static Header = ({title}) => {
+    static Header = ({title, closeModal, titleStyle}) => {
         return (
             <React.Fragment>
                 <div className="modal-header">
-                    <span>{title}</span>
+                    <span style={titleStyle && {...titleStyle}}>{title}</span>
                     <Button icon="close" 
                         iconColor="#6b808c" 
                         background="none"
                         iconMaskPosition="center" 
                         iconSize="16px"
+                        onClick={closeModal}
                         width="32px" 
                         height="32px" />
                 </div>
@@ -30,41 +31,107 @@ export default class Modal extends Component {
     };
 
     static Divider = (props) => (
-        <React.Fragment>
-            <div className="modal-divider">
-                <div className="border"></div>
-            </div>
-        </React.Fragment>
+        <div className="modal-divider">
+            <div className="border"></div>
+        </div>
     );
 
     static Section = (props) => (
         <React.Fragment>
-            <div className="modal-section"></div>
+            <div className="modal-section">
+                {props.children}
+            </div>
+            <Modal.Divider />
+        </React.Fragment>
+    );
+
+    static MenuSection = (props) => (
+        <React.Fragment>
+            <div className="modal-menu-section">
+                {props.children}
+            </div>
         </React.Fragment>
     );
 
     static Column = (props) => (
-        <React.Fragment>
-            <div className="modal-column"></div>
-        </React.Fragment>
+        <div className="modal-column" style={props.extraStyles}>
+            {props.children}
+        </div>
     );
 
     static Row = (props) => (
-        <React.Fragment>
-            <div className="modal-row"></div>
-        </React.Fragment>
+        <div className="modal-row" style={props.extraStyles}>
+            {props.children}
+        </div>
     );
 
-    static Button = (props) => (
-        <React.Fragment>
-            <div className="modal-button"></div>
-        </React.Fragment>
+    static Button = ({title, subtitle}) => (
+        <button className="modal-button">
+            {title} {subtitle && <span className="subtitle">{subtitle}</span>}
+        </button>
     );
 
     static Footer = (props) => (
-        <React.Fragment>
-            <div className="modal-footer"></div>
-        </React.Fragment>
+        <div className="modal-footer">
+            {props.children}
+        </div>
+    );
+
+    static Input = ({label, value, placeholder}) => (
+        <div className="modal-input">
+            {label && <label>{label}</label>}
+            <input type="text"
+                placeholder={placeholder} 
+                value={value}
+                onChange={() => {
+                    // Need to do stuff here later...
+                }} 
+            />
+        </div>
+    );
+
+    static TextArea = ({value}) => (
+        <textarea value={value} onChange={() => {}}></textarea>
+    );
+
+    static DetailedButton = (props) => (
+        <button className="modal-detailed-button">
+            <div className="button-title">
+                {props.icon && <Icon icon={props.icon} maskPosition="center" size="16px" maskSize="16px" backgroundColor={props.color} />}
+                <span className="title">{props.title}</span>
+            </div>
+            <span>{props.description}</span>
+        </button>
+    );
+
+    static ImageButton = ({title, children}) => (
+        <div className="modal-image-button">
+            {children}
+            <span className="image-button-title">{title}</span>
+        </div>
+    );
+
+    static Image = ({src}) => (
+        <img className="modal-image" src={src} />
+    );
+
+    static MiniProfile = ({initials, name, username, canEdit, closeModal}) => (
+        <div className="modal-mini-profile">
+            <UserIcon user={{initials, name, username}} diameter="50px" extraStyles={{fontSize: "16px"}} />
+            <div className="info">
+                <a href={`/u/${username}`} className="name">{name}</a>
+                <span className="username">@{username}</span>
+                {canEdit && <a className="edit-profile" href="#">Edit profile info</a> }
+            </div>
+            <Button icon="close" 
+                iconColor="#6b808c" 
+                background="none"
+                iconMaskPosition="center" 
+                iconSize="16px"
+                onClick={closeModal}
+                width="32px" 
+                height="32px" />
+        </div>
     );
 
     componentDidUpdate = () => {
@@ -80,6 +147,15 @@ export default class Modal extends Component {
         }
     }
     
+    componentWillUnmount = () => {
+        let { listener } = this.state;
+
+        if (listener) {
+            document.removeEventListener('mousedown', this.handleFocusClick, false);
+            this.setState({listener: false});
+        }
+    }
+
     handleFocusClick = (e) => {
         if (!this.modal.contains(e.target)) {
             this.props.closeModal();
@@ -87,29 +163,64 @@ export default class Modal extends Component {
     } 
 
     determineStyle = () => {
-        let { width, height, position } = this.props;
+        let { width, height, position, setLocation } = this.props;
 
-        let top = position.y + position.height + 6;
-        let left = position.x;
+        if (setLocation) {
+            return {
+                width,
+                top: position.top,
+                right: position.right,
+                bottom: position.bottom
+            }
+        } else {
 
-        return {
-            width,
-            height,
-            top,
-            left
-        };
+            let top = position.y + position.height + 6;
+            let left = position.x;
+
+            let widthNum = width.includes("px") ? width.slice(0, width.length - 2) : console.error("WIDTH CONVERSION NOT HANDLED IN MODAL.");
+            widthNum = parseInt(widthNum);
+
+            // don't allow modal to go off screen on horizontal axis
+            // give at least 6px of margin to edge
+            let modalEndX = widthNum + left + 6;
+            if (modalEndX > window.innerWidth) {
+                let difference = modalEndX - window.innerWidth;
+                left -= difference;
+            }
+
+            return {
+                width,
+                height,
+                top,
+                left
+            };
+        }
+    }
+
+    determineClassNames = () => {
+        let { className } = this.props;
+
+        if (className) {
+            return "modal " + className;
+        } else {
+            return "modal";
+        }
     }
 
     render() {
-        let { open, position } = this.props;
+        let { open, position, setLocation, className } = this.props;
 
-        if (open && position.y) {
+        if ((open && position.y) || (open && setLocation)) {
             return (
-                <div className="modal" 
+                <div className={this.determineClassNames()}
                     style={this.determineStyle()}
                     ref={modal => this.modal = modal}
                 >
-                    {this.props.children}
+                    {React.Children.map(this.props.children, child =>
+                        React.cloneElement(child, {
+                            closeModal: this.props.closeModal
+                        }),
+                    )}
                 </div>
             );
         } else {

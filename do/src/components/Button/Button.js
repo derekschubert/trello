@@ -20,14 +20,15 @@ export default class Button extends Component {
     }
 
     handleClick = (e) => {
-        let { refId } = this.props;
-
-        if (refId) {
+        let { refId, onClick } = this.props;
+        
+        if (onClick) {
+            onClick();
+        } else if (refId) {
             let position = ReactDOM
                 .findDOMNode(this.refs[refId])
                 .getBoundingClientRect();
 
-            console.log("Position of element:", position);
             this.setState({modalPosition: {x: position.x, y: position.y, height: position.height}, showModal: true});
         }
     }
@@ -119,7 +120,7 @@ export default class Button extends Component {
     }
 
     render() {
-        let { iconWrapperSize, refId, href, icon, name, weight, fontSize, iconMaskPosition, iconColor, iconSize } = this.props;
+        let { fontColor, iconWrapperSize, refId, href, icon, name, weight, fontSize, iconMaskPosition, iconColor, iconSize } = this.props;
 
         return (
             <React.Fragment>
@@ -132,7 +133,7 @@ export default class Button extends Component {
                     ref={refId}
                 >
                     {icon && <Icon size={iconWrapperSize} icon={icon} backgroundColor={iconColor} maskSize={iconSize} maskPosition={iconMaskPosition} />}
-                    {name && <span style={{fontWeight: weight, fontSize}} className="name">{name}</span>}
+                    {name && <span style={{fontWeight: weight, fontSize, color: fontColor}} className="name">{name}</span>}
                 </a>
                 {React.Children.map(this.props.children, child => 
                     React.cloneElement(child, {
@@ -154,6 +155,7 @@ Button.propTypes = {
     icon: PropTypes.string,
     weight: PropTypes.string,
     hoverColor: PropTypes.string,
+    fontColor: PropTypes.string,
     iconColor: PropTypes.string,
     fontSize: PropTypes.string,
     iconMaskPosition: PropTypes.string,
@@ -171,6 +173,7 @@ Button.defaultProps = {
     height: "32px",
     iconColor: "#fff",
     iconSize: "auto",
+    fontColor: "#fff",
     fontSize: "14px",
     iconMaskPosition: "center",
     href: "#",

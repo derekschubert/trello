@@ -12,4 +12,5 @@
 
 .user-icon:hover {
     background: #c2ccd1;
+    cursor: pointer;
 }

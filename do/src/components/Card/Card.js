@@ -34,7 +34,7 @@ export default class Card extends Component {
     }
 
     render() {
-        let { name, id, index } = this.props;
+        let { name, id, index, onClick } = this.props;
 
         return (
             <Draggable key={id} draggableId={"card" + id} index={index} type="card" >
@@ -47,6 +47,7 @@ export default class Card extends Component {
                         onMouseEnter={() => this.handleToggleHover(true)}
                         onMouseLeave={() => this.handleToggleHover(false)}
                         style={this.determineStyle(provided)}
+                        onClick={() => onClick(this.props)}
                     >
                         <span>{name}</span>
                         {this.renderEditIcon()}

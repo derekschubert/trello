@@ -18,7 +18,7 @@ export default class List extends Component {
     }
 
     renderCards = () => {
-        let { cards, list } = this.props;
+        let { cards, list, onCardClick } = this.props;
         let orderedCards = [];
 
         if (cards.length) {
@@ -29,7 +29,7 @@ export default class List extends Component {
             });
     
             return orderedCards.map((card, index) => (
-                <Card {...card} key={"card-" + card.id} index={index} />
+                <Card {...card} key={"card-" + card.id} index={index} onClick={onCardClick} />
             ));
         } else {
             return null;
@@ -37,7 +37,7 @@ export default class List extends Component {
     }
 
     render() {
-        let { name, color, cards, position, id } = this.props.list;
+        let { name, cards, position, id } = this.props.list;
         let hasCards = cards.length ? true : false;
 
         return (
