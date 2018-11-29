@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apollo-boost": "^0.1.21",
+    "graphql": "^14.0.2",
+    "graphql-tag": "^2.10.0",
     "jointjs": "^2.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.1",
+    "react-apollo": "^2.3.1",
     "react-beautiful-dnd": "^9.0.2",
     "react-dom": "^16.6.1",
     "react-router-dom": "^4.3.1",

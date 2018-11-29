@@ -34,10 +34,10 @@ export default class Card extends Component {
     }
 
     render() {
-        let { name, id, index, onClick } = this.props;
+        let { name, shortid, index, onClick } = this.props;
 
         return (
-            <Draggable key={id} draggableId={"card" + id} index={index} type="card" >
+            <Draggable key={shortid} draggableId={shortid} index={index} type="card" >
                 {(provided, snapshot) => (
                     <div
                         ref={provided.innerRef}
@@ -59,7 +59,7 @@ export default class Card extends Component {
 }
 
 Card.propTypes = {
-    id: PropTypes.number.isRequired,
+    shortid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired
 }

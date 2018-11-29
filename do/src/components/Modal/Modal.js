@@ -5,6 +5,8 @@ import UserIcon from '../UserIcon';
 import Button from '../Button';
 import Icon from '../Icon';
 
+/* eslint jsx-a11y/anchor-is-valid: 0  */
+
 export default class Modal extends Component {
     constructor(props) {
         super(props);
@@ -112,7 +114,7 @@ export default class Modal extends Component {
     );
 
     static Image = ({src}) => (
-        <img className="modal-image" src={src} />
+        <img className="modal-image" src={src} alt='' />
     );
 
     static MiniProfile = ({initials, name, username, canEdit, closeModal}) => (
@@ -208,7 +210,7 @@ export default class Modal extends Component {
     }
 
     render() {
-        let { open, position, setLocation, className } = this.props;
+        let { open, position, setLocation } = this.props;
 
         if ((open && position.y) || (open && setLocation)) {
             return (

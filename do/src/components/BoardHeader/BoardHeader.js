@@ -1,4 +1,5 @@
 import React from 'react';
+import './BoardHeader.css';
 
 import Modals from '../Modal/Modals';
 import Search from '../Search';
@@ -7,7 +8,7 @@ import UserIcon from '../UserIcon';
 
 let BoardHeader = (props) => {
     return (
-        <header>
+        <header style={{backgroundColor: props.backgroundColor ? props.backgroundColor : 'rgba(0,0,0,.15)'}}>
             <div className="left-header">
                 <Button background="light" href="/" icon="back" />
                 <Button background="light" href="/boards" name="Boards" icon="trelloicon" width="90px" />

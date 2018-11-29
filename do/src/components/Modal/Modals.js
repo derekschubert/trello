@@ -110,7 +110,7 @@ export default class Modals extends Component {
                 <Modal.Header title="Notifications" />
                 <Modal.Section>
                     <Modal.Column extraStyles={{marginTop: "16px", marginBottom: "16px"}}>
-                        <img src="https://a.trellocdn.com/prgb/dist/images/taco-sleep.0582d9f3bdb5060e7285.svg" />
+                        <img alt="No new notifications" src="https://a.trellocdn.com/prgb/dist/images/taco-sleep.0582d9f3bdb5060e7285.svg" />
                         <span className="no-notifications-title">No Unread Notifications</span>
                     </Modal.Column>
                 </Modal.Section>

@@ -10,7 +10,7 @@ let BoardSubHeader = ({ title, team, visibility, openMenu }) => {
             <div className="left-sub-header">
                 <Button fontSize="18px" 
                     className="title" 
-                    width="38px" 
+                    width="auto" 
                     refId="btn-board-title"
                     name={title} 
                     background="none">

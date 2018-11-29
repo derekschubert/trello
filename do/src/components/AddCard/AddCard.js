@@ -4,6 +4,8 @@ import './AddCard.css';
 import Button from '../Button';
 import Icon from '../Icon';
 
+/* eslint jsx-a11y/anchor-is-valid: 0  */
+
 export default class AddCard extends Component {
     constructor(props) {
         super(props);

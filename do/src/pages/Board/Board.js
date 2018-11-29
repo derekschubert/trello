@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { compose, graphql } from 'react-apollo';
+import './Board.css';
 
 // Components
 import List from '../../components/List';
@@ -9,10 +11,11 @@ import BoardSubHeader from '../../components/BoardSubHeader';
 import CardDetails from '../../components/CardDetails';
 import MenuModal from '../../components/Modal/MenuModal';
 
-import './Board.css'
-import tempApi from '../../api/tempBoard.json';
+// GraphQL Queries and Mutations
+import { getBoard } from '../../graphql/query.js';
+import { moveCard } from '../../graphql/mutation.js';
 
-export default class Board extends Component {
+class Board extends Component {
     constructor(props) {
         super(props);
 
@@ -20,14 +23,7 @@ export default class Board extends Component {
             activeCard: {},
             showCardDetails: false,
             showMenu: false,
-            ...tempApi
         };
-
-        // this.setState(tempApi);
-    }
-
-    componentWillMount() {
-    
     }
 
     onDragStart = () => {
@@ -38,9 +34,40 @@ export default class Board extends Component {
 
     }
 
-    onDragEnd = () => {
-        // Required
-        console.log("Finished dragging");
+    onDragEnd = item => {
+        console.group("Drag End");
+        const boardId = this.props.data.getBoard.shortid;
+
+        if (item.type === 'card') {
+            let ogList = this.props.data.getBoard.lists.filter(l => l.shortid === item.source.droppableId)[0];
+            
+            console.log('Dragged Item:', item);
+            console.log('OG List:', ogList);
+            
+            if (item.destination.droppableId === item.source.droppableId) {
+                if (item.destination.index === item.source.index) return;
+                console.log('Card moved to different index in same list.');
+                
+                let newOrderOfCards = ogList.orderOfCards.filter(c => c !== item.draggableId);
+                newOrderOfCards.splice(item.destination.index, 0, item.draggableId);
+                
+                this.props.data.getBoard.lists.forEach(l => { if (l.shortid == ogList.shortid) { l.orderOfCards = newOrderOfCards} });
+
+                this.props.moveCard({variables: {
+                    boardId,
+                    listId: ogList.shortid,
+                    orderOfCards: ogList.orderOfCards,
+                    cardId: item.draggableId,
+                    newPosition: item.destination.index,
+                }});
+
+                console.log('New Order of Cards:', newOrderOfCards);
+            } else {
+                console.log('Card moved to new list');
+            }
+            
+        }
+        console.groupEnd();
     }
 
     handleToggleMenu = (showMenu) => {
@@ -61,20 +88,20 @@ export default class Board extends Component {
     }
 
     renderLists = () => {
-        return this.state.lists.map(list => {
+        let { cards, lists } = this.props.data.getBoard;
+        return lists.map(list => {
             return (
                 <List 
                     list={list} 
-                    cards={this.state.cards} 
-                    key={"list-" + list.id}
+                    cards={cards}
+                    key={"list-" + list.shortid}
                     onCardClick={this.handleCardClick} />
             );
         });
     }
 
     render() {
-        let { title, team, visibility, activeCard, showCardDetails, showMenu } = this.state;
-
+        let { activeCard, showCardDetails, showMenu } = this.state;
         return (
             <DragDropContext
                 onDragStart={this.onDragStart}
@@ -83,22 +110,28 @@ export default class Board extends Component {
             >
                 <div className="board">
                     <BoardHeader />
-                    <BoardSubHeader title={title} team={team} visibility={visibility} openMenu={() => this.handleToggleMenu(true)} />
-                    <div className="content-wrapper">
-                        <Droppable droppableId="board-droppable" type="list" direction="horizontal">
-                            {(provided, snapshot) => (
-                                <div className="content"
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                >
-                                    {this.renderLists()}
-                                    {provided.placeholder}
-                                    <AddList />
+                        {!this.props.data.loading && 
+                            <React.Fragment>
+                                <BoardSubHeader title={this.props.data.getBoard.name}
+                                    team={this.props.data.getBoard.team}
+                                    visibility={this.props.data.getBoard.visibility}
+                                    openMenu={() => this.handleToggleMenu(true)} />
+                                <div className="content-wrapper">
+                                    <Droppable droppableId="board-droppable" type="list" direction="horizontal">
+                                        {(provided, snapshot) => (
+                                            <div className="content"
+                                                ref={provided.innerRef}
+                                                {...provided.droppableProps}
+                                            >
+                                                {this.renderLists()}
+                                                {provided.placeholder}
+                                                <AddList />
+                                            </div>
+                                        )}
+                                    </Droppable>
                                 </div>
-                            )}
-                            
-                        </Droppable>
-                    </div>
+                            </React.Fragment>
+                        }
                     <CardDetails closeCardDetails={this.handleCloseCardDetails} card={activeCard} open={showCardDetails} />
                     <MenuModal open={showMenu} closeModal={() => this.handleToggleMenu(false)} />
                 </div>
@@ -106,3 +139,28 @@ export default class Board extends Component {
         );
     }
 }
+
+export default compose(
+    graphql(getBoard, {
+        options: (props) => {
+            const path = props.location.pathname.split('/b/')[1];
+            return {
+                variables: {
+                    id: path
+                }
+            }
+        }
+    }),
+    graphql(moveCard, { name: 'moveCard' }),
+)(Board);
+
+// export default graphql(getBoard, {
+//     options: (props) => {
+//         const path = props.location.pathname.split('/b/')[1];
+//         return {
+//             variables: {
+//                 id: path
+//             }
+//         }
+//     }
+// })(Board);

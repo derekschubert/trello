@@ -5,6 +5,8 @@ import Button from '../Button';
 import Icon from '../Icon';
 import UserIcon from '../UserIcon';
 
+/* eslint jsx-a11y/anchor-is-valid: 0  */
+
 class CardDetails extends Component {
     constructor(props) {
         super(props);

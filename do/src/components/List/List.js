@@ -22,14 +22,14 @@ export default class List extends Component {
         let orderedCards = [];
 
         if (cards.length) {
-            list.cards.forEach(cardId => {
+            list.orderOfCards.forEach(cardId => {
                 orderedCards.push(
-                    cards.filter(c => c.id === cardId)[0]
+                    cards.filter(c => c.shortid === cardId)[0]
                 );
             });
     
             return orderedCards.map((card, index) => (
-                <Card {...card} key={"card-" + card.id} index={index} onClick={onCardClick} />
+                <Card {...card} key={"card-" + card.shortid} index={index} onClick={onCardClick} />
             ));
         } else {
             return null;
@@ -37,11 +37,12 @@ export default class List extends Component {
     }
 
     render() {
-        let { name, cards, position, id } = this.props.list;
+        let { name, position, shortid } = this.props.list;
+        let { cards } = this.props;
         let hasCards = cards.length ? true : false;
 
         return (
-            <Draggable draggableId={"list" + id} index={position} type="list">
+            <Draggable draggableId={shortid} index={position} type="list">
                 {(provided) => (
                     <div
                         className="list"
@@ -57,7 +58,7 @@ export default class List extends Component {
                         </div>
                         
                         <div className="cards-wrapper">
-                            <Droppable droppableId={name + id} type="card">
+                            <Droppable droppableId={shortid} type="card">
                                 {(provided, snapshot) => (
                                     <div className="cards"
                                         ref={provided.innerRef}
