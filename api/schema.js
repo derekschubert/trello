@@ -67,8 +67,6 @@ type Mutation {
   createExampleBoards(name: String): [Board!]!
   resetBoardDB: [Board]
   resetUserDB: [User]
-  updateLists(boardId: String!, lists: [ListInput!], listOrder: [String!]): String
-  moveCard(boardId: String!, listId: String!, cardOrder: [String!]!, cardId: String!, newPosition: Int!): [String!]!
-  moveList(listId: String!): List!
+  updateLists(boardId: String!, lists: [ListInput!], listOrder: [String!]): String!
 }
 `;
