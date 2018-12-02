@@ -244,7 +244,7 @@ class Board extends Component {
 
           <CardDetails closeCardDetails={this.handleCloseCardDetails} card={activeCard} open={showCardDetails} />
           <MenuModal open={showMenu} closeModal={() => this.handleToggleMenu(false)} />
-        </div>"test"
+        </div>
       </DragDropContext>
     );
   }
