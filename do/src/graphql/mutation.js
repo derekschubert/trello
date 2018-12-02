@@ -1,9 +1,15 @@
 import { gql } from 'apollo-boost';
 
-const moveCard = gql`
-    mutation($boardId: String!, $listId: String!, $orderOfCards: [String!]!, $cardId: String!, $newPosition: Int!) {
-        moveCard(boardId: $boardId, listId: $listId, orderOfCards: $orderOfCards, cardId: $cardId, newPosition: $newPosition)
+const MOVE_CARD = gql`
+    mutation moveCard($boardId: String!, $listId: String!, $cardOrder: [String!]!, $cardId: String!, $newPosition: Int) {
+        moveCard(boardId: $boardId, listId: $listId, cardOrder: $cardOrder, cardId: $cardId, newPosition: $newPosition)
     }
 `;
 
-export { moveCard };
+const UPDATE_LISTS = gql`
+    mutation updateLists($boardId: String!, $lists: [ListInput!], $listOrder: [String!]) {
+      updateLists(boardId: $boardId, lists: $lists, listOrder: $listOrder)
+    }
+`;
+
+export { MOVE_CARD, UPDATE_LISTS };

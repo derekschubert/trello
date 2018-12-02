@@ -17,7 +17,7 @@ const List = new mongoose.Schema({
     default: () => '#dfe3e6',
   },
   name: String,
-  orderOfCards: [String],
+  cardOrder: [String],
 });
 
 const Card = new mongoose.Schema({

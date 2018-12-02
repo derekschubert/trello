@@ -12,11 +12,13 @@ export default [
     members: ['1'],
     lists: [
       {
+        shortid: '3beNGE4g',
         name: 'Today',
-        orderOfCards: ['9siLKC7q', '9siLKC8q'],
+        cardOrder: ['9siLKC7q', '9siLKC8q'],
       }, {
+        shortid: '4beNGE5e',
         name: 'Waiting',
-        orderOfCards: ['9siLKC9q'],
+        cardOrder: ['9siLKC9q'],
       },
     ],
     cards: [
@@ -34,41 +36,7 @@ export default [
         description: '',
       },
     ],
-    listOrder: [],
-    visibility: 'Private',
-  }, {
-    name: 'Amazing Epic Project',
-    color: 'rgb(0, 174, 204)',
-    owner: '1',
-    admins: ['1'],
-    moderators: [],
-    members: ['1'],
-    team: {
-      name: 'Personal',
-      id: '1',
-    },
-    lists: [
-      {
-        name: 'Today',
-        orderOfCards: [],
-      }, {
-        name: 'Waiting',
-        orderOfCards: [],
-      },
-    ],
-    cards: [
-      {
-        name: 'a',
-        description: '',
-      }, {
-        name: 'b',
-        description: '',
-      }, {
-        name: 'c',
-        description: '',
-      },
-    ],
-    listOrder: [],
+    listOrder: ['3beNGE4g', '4beNGE5e'],
     visibility: 'Private',
   },
 ];

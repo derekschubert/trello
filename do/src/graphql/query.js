@@ -1,6 +1,7 @@
 import { gql } from 'apollo-boost';
+// import { gql } from 'graphql-tag';
 
-const getBoard = gql`
+const GET_BOARD = gql`
     query($id: String!) {
         getBoard(id: $id) {
             name
@@ -12,7 +13,7 @@ const getBoard = gql`
                 shortid
                 color
                 name
-                orderOfCards
+                cardOrder
             }
             cards {
                 name
@@ -20,8 +21,9 @@ const getBoard = gql`
                 description
             }
             visibility
+            listOrder
         }
     }
 `;
 
-export { getBoard };
+export { GET_BOARD };

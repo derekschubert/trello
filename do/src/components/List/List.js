@@ -20,9 +20,9 @@ export default class List extends Component {
     renderCards = () => {
         let { cards, list, onCardClick } = this.props;
         let orderedCards = [];
-
+        
         if (cards.length) {
-            list.orderOfCards.forEach(cardId => {
+            list.cardOrder.forEach(cardId => {
                 orderedCards.push(
                     cards.filter(c => c.shortid === cardId)[0]
                 );
@@ -37,8 +37,8 @@ export default class List extends Component {
     }
 
     render() {
-        let { name, position, shortid } = this.props.list;
-        let { cards } = this.props;
+        let { name, shortid } = this.props.list;
+        let { cards, position } = this.props;
         let hasCards = cards.length ? true : false;
 
         return (

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ApolloClient from 'apollo-boost';
+// import { Client } from './apollo';
 import { ApolloProvider } from 'react-apollo';
 
 import Routes from './Routes';

@@ -44,7 +44,14 @@ type List {
   id: String!
   name: String!
   color: String!
-  orderOfCards: [String]
+  cardOrder: [String]
+}
+
+input ListInput {  
+  shortid: String
+  name: String
+  color: String
+  cardOrder: [String]!
 }
 
 type Query {
@@ -60,7 +67,8 @@ type Mutation {
   createExampleBoards(name: String): [Board!]!
   resetBoardDB: [Board]
   resetUserDB: [User]
-  moveCard(boardId: String!, listId: String!, orderOfCards: [String!]!, cardId: String!, newPosition: Int!): [String!]!
+  updateLists(boardId: String!, lists: [ListInput!], listOrder: [String!]): String
+  moveCard(boardId: String!, listId: String!, cardOrder: [String!]!, cardId: String!, newPosition: Int!): [String!]!
   moveList(listId: String!): List!
 }
 `;

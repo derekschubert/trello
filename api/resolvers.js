@@ -30,19 +30,34 @@ export default {
         new Board(b).save()
       ))
     ),
+    updateLists: async (parent, args, context, info) => {
+      console.group('Update Lists');
+      
+      Board.findOne({ shortid: args.boardId }, (err, board) => {
+        if (err) return `${err}`;
+        if (args.lists) board.lists = args.lists;
+        if (args.listOrder) board.listOrder = args.listOrder;
+        board.save();
+
+        console.log('Success!');
+        return 'Success';
+      });
+
+      console.groupEnd();
+    },
     moveCard: async (parent, args, context, info) => {
       console.group('Move Card');
       console.log(args);
 
-      let newOrderOfCards = args.orderOfCards.filter(c => c !== args.cardId);
-      newOrderOfCards.splice(args.newPosition, 0, args.cardId);
+      let newCardOrder = args.cardOrder.filter(c => c !== args.cardId);
+      newCardOrder.splice(args.newPosition, 0, args.cardId);
       
       Board.findOne({ shortid: args.boardId }, (err, board) => {
         if (err) throw err;
         else {
           board.lists.forEach((l) => {
             if (l.shortid === args.listId) {
-              l.orderOfCards = newOrderOfCards;
+              l.cardOrder = newCardOrder;
             }
           });
           console.log('Success!');
@@ -51,7 +66,7 @@ export default {
       });
 
       console.groupEnd();
-      return newOrderOfCards;
+      return newCardOrder;
     },
     moveList: async () => {
 
