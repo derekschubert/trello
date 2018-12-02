@@ -11,10 +11,30 @@ export default class AddList extends Component {
     super(props);
     this.state = {
       active: false,
+      listener: false,
       hover: false,
       listNameValue: '',
     };
   }
+
+  componentDidUpdate = () => {
+    let { active, listener } = this.state;
+
+    if (active && !listener) {
+      document.addEventListener('mousedown', this.handleFocusClick, false);
+      this.setState({ listener: true });
+    } else if (!active && listener) {
+      document.removeEventListener('mousedown', this.handleFocusClick, false);
+      this.setState({ listener: false });
+    }
+  }
+
+  componentWillUnmount = () => {
+    if (this.state.listener) {
+      document.removeEventListener('mousedown', this.handleFocusClick, false);
+    }
+  }
+
 
   handleInputChange = (e) => {
     let { name, value } = e.target;
@@ -34,7 +54,7 @@ export default class AddList extends Component {
 
   handleFocusClick = (e) => {
     if (!this.node.contains(e.target)) {
-
+      this.handleActive(false);
     }
   }
 
@@ -43,12 +63,9 @@ export default class AddList extends Component {
       this.setState({ active: true, hover: false }, () => {
         this.focusInput.focus();
       });
-      // document.addEventListener('mousedown', this.handleFocusClick, false);
     } else {
       this.setState({ active: false, hover: false });
-      // document.removeEventListener('mousedown', this.handleFocusClick, false);
     }
-
   }
 
   determineInactiveStlye = () => {
@@ -81,25 +98,32 @@ export default class AddList extends Component {
   }
 
   renderActive = () => {
-    let { handleAddList } = this.props;
-    console.log(handleAddList);
-
     return (
-      <div className="adding-list"
+      <form className="adding-list"
+        ref={node => this.node = node}
       >
         <input type="text"
           name="listNameValue"
           placeholder="Enter list title..."
-          value={this.state.listNameValue}
           ref={focusInput => this.focusInput = focusInput}
-          onBlur={() => this.handleActive(false)}
+          value={this.state.listNameValue}
           onChange={(e) => this.handleInputChange(e)}
         />
         <div className="controls">
-          <Button name="Add List" onClick={() => handleAddList(this.state.listNameValue)} width="auto" className="add" background="#5aac44" hoverColor="#519839" />
-          <Button icon="close" className="close" iconColor="#798d99" background="none" />
+          <Button name="Add List" 
+            onClick={() => this.props.handleAddList(this.state.listNameValue)} 
+            width="auto" 
+            type='submit'
+            className="add" 
+            background="#5aac44" 
+            hoverColor="#519839" />
+          <Button 
+            icon="close" 
+            className="close" 
+            iconColor="#798d99" 
+            background="none" />
         </div>
-      </div>
+      </form>
     );
   }
 

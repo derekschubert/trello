@@ -7,8 +7,8 @@ const MOVE_CARD = gql`
 `;
 
 const UPDATE_LISTS = gql`
-    mutation updateLists($boardId: String!, $lists: [ListInput!], $listOrder: [String!]) {
-      updateLists(boardId: $boardId, lists: $lists, listOrder: $listOrder)
+    mutation updateLists($boardId: String!, $lists: [ListInput!], $listOrder: [String!], $cards: [CardInput!]) {
+      updateLists(boardId: $boardId, lists: $lists, listOrder: $listOrder, cards: $cards)
     }
 `;
 

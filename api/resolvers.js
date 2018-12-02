@@ -40,6 +40,7 @@ export default {
 
       if (args.lists) board.lists = args.lists;
       if (args.listOrder) board.listOrder = args.listOrder;
+      if (args.cards) board.cards = args.cards;
 
       await board.save();
       return statusMessage;

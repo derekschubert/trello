@@ -54,6 +54,12 @@ input ListInput {
   cardOrder: [String]!
 }
 
+input CardInput {
+  shortid: String!
+  name: String!
+  description: String
+}
+
 type Query {
   getBoard(id: String!): Board!
   getAllBoards: [Board!]!
@@ -67,6 +73,6 @@ type Mutation {
   createExampleBoards(name: String): [Board!]!
   resetBoardDB: [Board]
   resetUserDB: [User]
-  updateLists(boardId: String!, lists: [ListInput!], listOrder: [String!]): String!
+  updateLists(boardId: String!, cards: [CardInput!], lists: [ListInput!], listOrder: [String!]): String!
 }
 `;

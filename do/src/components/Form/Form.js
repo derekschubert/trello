@@ -19,7 +19,7 @@ export default class Form extends Component {
 
   static Input = ({state, type, label, placeholder, onChange, name}) => (
     <div className="form-input-wrapper">
-      <label>{label}</label>
+      {label && <label>{label}</label>}
       <input type={type} placeholder={placeholder} name={name} value={state[name]} onChange={(e) => onChange(e)} />
     </div>
   );
@@ -45,9 +45,10 @@ export default class Form extends Component {
   }
 
   render() {
+    let className = this.props.className ? 'form ' + this.props.className : 'form';
 
     return (
-      <form className="form" onSubmit={(e) => this.handleSubmit(e)}>
+      <form className={className} onSubmit={(e) => this.handleSubmit(e)}>
         {React.Children.map(this.props.children, child =>
             React.cloneElement(child, {
                 state: this.state,

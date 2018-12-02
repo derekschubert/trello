@@ -45,10 +45,6 @@ class Board extends Component {
     return out;
   }
 
-  updateState = (data) => {
-    this.setState({ ...data });
-  }
-
   onDragStart = () => {
   }
 
@@ -86,26 +82,74 @@ class Board extends Component {
     if (name) list.name = name;
     if (cardOrder) list.cardOrder = cardOrder;
     if (color) list.color = color;
+    list.shortid = this.generateUID();
 
     return list;
   }
 
-  handleAddList = (listTitle) => {
-    console.log('handle add list');
-    console.log('Name:', listTitle);
-    // if (listTitle !== '') {
-    //   const boardId = this.state.shortid;
+  createCard = ({ name }) => {
+    return {
+      name,
+      shortid: this.generateUID(),
+      description: '',
+    };
+  }
 
-    //   const newList = this.createList({name: listTitle});
+  handleAddCard = async (listId, cardTitle) => {
+    if (cardTitle !== '') {
+      const boardId = this.state.shortid;
 
-    //   const tempid = this.generateUID();
-    //   const localList = { ...newList, shortid: tempid };
+      let newCard = this.createCard({name: cardTitle});
+      const cards = this.cleanMutationObjects([ ...this.state.cards, newCard ]);
+      let lists = this.cleanMutationObjects([ ...this.state.lists ]);
 
-    //   this.setState(state => ({
-    //     lists: [ ...state.lists, localList ],
-    //     listOrder: [ ...state.listOrder, localList.shortid ],
-    //   }));
-    // }    
+      let updatedList = lists.filter(l => l.shortid === listId)[0];
+      lists = lists.filter(l => l.shortid !== listId);
+
+      updatedList.cardOrder.push(newCard.shortid);
+      lists.push(updatedList);
+
+
+      this.setState({
+        lists,
+        cards,
+      });
+
+      let isSuccess = await updateListsMutation({variables: {
+        boardId,
+        lists,
+        cards,
+      }});
+
+      console.log('Create card:', isSuccess.data);
+    }
+  }
+
+  handleAddList = async (listTitle) => {
+    if (listTitle !== '') {
+      const boardId = this.state.shortid;
+      let newList = this.createList({
+        name: listTitle,
+        cardOrder: [], 
+        color: 'rgb(223, 227, 230)',
+      });
+
+      const lists = this.cleanMutationObjects([ ...this.state.lists, newList ]);
+      const listOrder = [ ...this.state.listOrder, newList.shortid ];
+
+      this.setState({
+        lists,
+        listOrder,
+      });
+
+      let isSuccess = await updateListsMutation({variables: {
+        boardId,
+        lists,
+        listOrder,
+      }});
+
+      console.log('Create list:', isSuccess.data);
+    }
   }
 
   handleListDrag = async (item, boardId) => {
@@ -209,6 +253,7 @@ class Board extends Component {
           position={index}
           cards={cards}
           key={"list-" + list.shortid}
+          handleAddCard={this.handleAddCard}
           onCardClick={this.handleCardClick} />
       );
     });
