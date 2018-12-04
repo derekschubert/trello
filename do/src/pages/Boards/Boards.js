@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 import './Boards.css';
 
 import BoardCard from '../../components/BoardCard';
+import AddBoard from '../../components/AddBoard';
 import BoardHeader from '../../components/BoardHeader';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
@@ -51,6 +52,7 @@ class Boards extends Component {
       {boards.map(b => (
         <BoardCard key={'b-' + b.name} {...b} />
       ))}
+      <AddBoard />
     </div>
   );
 

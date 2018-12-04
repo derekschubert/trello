@@ -30,7 +30,7 @@ class Board extends Component {
   }
 
   onBoardFetched = (board) => {
-    this.setState(() => ({...board, gotBoardData: true}));
+    this.setState(() => ({ ...board, gotBoardData: true }));
   }
 
   cleanMutationObjects = (listOfObjects) => {
@@ -56,7 +56,7 @@ class Board extends Component {
     const boardId = this.state.shortid;
 
     // Ensure drag is legal
-    if (item && 
+    if (item &&
       item.hasOwnProperty('source') && item.source && item.source.hasOwnProperty('index') &&
       item.hasOwnProperty('destination') && item.destination && item.destination.hasOwnProperty('index')
     ) {
@@ -66,7 +66,7 @@ class Board extends Component {
         status = await this.handleCardDrag(item, boardId);
       } else if (item.type === 'list') {
         status = await this.handleListDrag(item, boardId);
-      } 
+      }
 
       console.log(`${item.type} Drag: ${status}`);
     }
@@ -78,7 +78,7 @@ class Board extends Component {
 
   createList = ({ name, cardOrder, color }) => {
     let list = {};
-    
+
     if (name) list.name = name;
     if (cardOrder) list.cardOrder = cardOrder;
     if (color) list.color = color;
@@ -99,9 +99,9 @@ class Board extends Component {
     if (cardTitle !== '') {
       const boardId = this.state.shortid;
 
-      let newCard = this.createCard({name: cardTitle});
-      const cards = this.cleanMutationObjects([ ...this.state.cards, newCard ]);
-      let lists = this.cleanMutationObjects([ ...this.state.lists ]);
+      let newCard = this.createCard({ name: cardTitle });
+      const cards = this.cleanMutationObjects([...this.state.cards, newCard]);
+      let lists = this.cleanMutationObjects([...this.state.lists]);
 
       let updatedList = lists.filter(l => l.shortid === listId)[0];
       lists = lists.filter(l => l.shortid !== listId);
@@ -115,11 +115,13 @@ class Board extends Component {
         cards,
       });
 
-      let isSuccess = await updateListsMutation({variables: {
-        boardId,
-        lists,
-        cards,
-      }});
+      let isSuccess = await updateListsMutation({
+        variables: {
+          boardId,
+          lists,
+          cards,
+        }
+      });
 
       console.log('Create card:', isSuccess.data);
     }
@@ -130,23 +132,25 @@ class Board extends Component {
       const boardId = this.state.shortid;
       let newList = this.createList({
         name: listTitle,
-        cardOrder: [], 
+        cardOrder: [],
         color: 'rgb(223, 227, 230)',
       });
 
-      const lists = this.cleanMutationObjects([ ...this.state.lists, newList ]);
-      const listOrder = [ ...this.state.listOrder, newList.shortid ];
+      const lists = this.cleanMutationObjects([...this.state.lists, newList]);
+      const listOrder = [...this.state.listOrder, newList.shortid];
 
       this.setState({
         lists,
         listOrder,
       });
 
-      let isSuccess = await updateListsMutation({variables: {
-        boardId,
-        lists,
-        listOrder,
-      }});
+      let isSuccess = await updateListsMutation({
+        variables: {
+          boardId,
+          lists,
+          listOrder,
+        }
+      });
 
       console.log('Create list:', isSuccess.data);
     }
@@ -161,11 +165,13 @@ class Board extends Component {
     this.setState({
       listOrder: newListOrder
     });
-    
-    let isSuccess = await updateListsMutation({variables: {
-      boardId,
-      listOrder: newListOrder,
-    }});
+
+    let isSuccess = await updateListsMutation({
+      variables: {
+        boardId,
+        listOrder: newListOrder,
+      }
+    });
 
     return isSuccess.data.updateLists;
   }
@@ -198,7 +204,7 @@ class Board extends Component {
 
       sourceList.cardOrder = newSourceCardOrder;
 
-      lists = this.state.lists.filter(l => 
+      lists = this.state.lists.filter(l =>
         l.shortid !== sourceList.shortid && l.shortid !== destinationList.shortid
       );
 
@@ -209,11 +215,13 @@ class Board extends Component {
     lists = this.cleanMutationObjects(lists);
 
     // Update state and update server
-    this.setState({lists});
-    let isSuccess = await updateListsMutation({variables: {
-      boardId,
-      lists: lists,
-    }});
+    this.setState({ lists });
+    let isSuccess = await updateListsMutation({
+      variables: {
+        boardId,
+        lists: lists,
+      }
+    });
 
     console.log('Is Success?:', isSuccess);
     return isSuccess.data.updateLists;
@@ -239,6 +247,24 @@ class Board extends Component {
   renderLists = () => {
     let { cards, lists, listOrder } = this.state;
     let orderedLists = [];
+    const actions = {
+      deleteList: async (listId) => {
+        console.log('Delete!');
+        let lists = this.state.lists.filter(l => l.shortid !== listId);;
+        let listOrder = this.state.listOrder.filter(id => id !== listId);
+
+        this.setState({ lists, listOrder });
+        let isSuccess = await updateListsMutation({
+          variables: {
+            boardId: this.state.shortid,
+            lists: this.cleanMutationObjects(lists),
+            listOrder,
+          }
+        });
+
+        console.log('Delete list:', isSuccess.data);
+      },
+    };
 
     listOrder.forEach(id => {
       orderedLists.push(
@@ -249,6 +275,7 @@ class Board extends Component {
     return orderedLists.map((list, index) => {
       return (
         <List
+          actions={actions}
           list={list}
           position={index}
           cards={cards}
@@ -257,6 +284,36 @@ class Board extends Component {
           onCardClick={this.handleCardClick} />
       );
     });
+  }
+
+  cardDetailsActions = {
+    buttons: {
+      deleteCard: async ({ cardId, listId, }) => {
+        let listToUpdate = this.state.lists.filter(l => l.shortid === listId)[0];
+        let lists = this.state.lists.filter(l => l.shortid !== listId);
+        let cards = this.state.cards.filter(c => c.shortid !== cardId);
+        listToUpdate.cardOrder = listToUpdate.cardOrder.filter(id => id !== cardId);
+
+        lists = this.cleanMutationObjects([...lists, listToUpdate]);
+        cards = this.cleanMutationObjects(cards);
+
+        this.setState({
+          lists,
+          cards,
+          showCardDetails: false,
+        });
+
+        let isSuccess = await updateListsMutation({
+          variables: {
+            boardId: this.state.shortid,
+            lists,
+            cards,
+          }
+        });
+
+        console.log('Delete card: ', isSuccess.data);
+      },
+    },
   }
 
   render() {
@@ -270,38 +327,38 @@ class Board extends Component {
         onDragEnd={this.onDragEnd}>
         <div className="board">
           <BoardHeader />
-            <Mutation mutation={UPDATE_LISTS}>
-              {(updateLists) => {
-                updateListsMutation = updateLists;
+          <Mutation mutation={UPDATE_LISTS}>
+            {(updateLists) => {
+              updateListsMutation = updateLists;
 
-                return (
-                  <React.Fragment>
-                    <BoardSubHeader title={name}
-                      team={team}
-                      visibility={visibility}
-                      openMenu={() => this.handleToggleMenu(true)} />
-                    <div className="content-wrapper">
-                      <Droppable droppableId="board-droppable" type="list" direction="horizontal">
-                        {(provided, snapshot) => (
-                          <div className="content"
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                          >
-                            {this.renderLists()}
-                            {provided.placeholder}
-                            <AddList handleAddList={this.handleAddList} />
-                          </div>
-                        )}
-                      </Droppable>
-                    </div>
-                  </React.Fragment>
-                );
-              }}
-            </Mutation>
-        <CardDetails closeCardDetails={this.handleCloseCardDetails} card={activeCard} open={showCardDetails} />
-        <MenuModal open={showMenu} closeModal={() => this.handleToggleMenu(false)} />
-      </div>
-    </DragDropContext>
+              return (
+                <React.Fragment>
+                  <BoardSubHeader title={name}
+                    team={team}
+                    visibility={visibility}
+                    openMenu={() => this.handleToggleMenu(true)} />
+                  <div className="content-wrapper">
+                    <Droppable droppableId="board-droppable" type="list" direction="horizontal">
+                      {(provided, snapshot) => (
+                        <div className="content"
+                          ref={provided.innerRef}
+                          {...provided.droppableProps}
+                        >
+                          {this.renderLists()}
+                          {provided.placeholder}
+                          <AddList handleAddList={this.handleAddList} />
+                        </div>
+                      )}
+                    </Droppable>
+                  </div>
+                </React.Fragment>
+              );
+            }}
+          </Mutation>
+          <CardDetails closeCardDetails={this.handleCloseCardDetails} card={activeCard} open={showCardDetails} actions={this.cardDetailsActions} />
+          <MenuModal open={showMenu} closeModal={() => this.handleToggleMenu(false)} />
+        </div>
+      </DragDropContext>
     );
   }
 }

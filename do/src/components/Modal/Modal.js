@@ -67,8 +67,8 @@ export default class Modal extends Component {
     </div>
   );
 
-  static Button = ({ title, subtitle }) => (
-    <button className="modal-button">
+  static Button = ({ title, subtitle, onClick }) => (
+    <button onClick={onClick} className="modal-button">
       {title} {subtitle && <span className="subtitle">{subtitle}</span>}
     </button>
   );

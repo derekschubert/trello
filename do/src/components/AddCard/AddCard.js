@@ -103,7 +103,7 @@ export default class AddCard extends Component {
         <div className="controls">
           <Button 
             name="Add Card"
-            onClick={() => this.props.handleAddCard(this.props.listId, createCardValue)}
+            onClick={() => {this.props.handleAddCard(this.props.listId, createCardValue); this.setState({createCardValue: ''});}}
             width="auto" 
             className="add" 
             background="#5aac44" 

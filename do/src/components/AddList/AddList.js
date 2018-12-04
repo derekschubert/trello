@@ -111,7 +111,7 @@ export default class AddList extends Component {
         />
         <div className="controls">
           <Button name="Add List" 
-            onClick={() => this.props.handleAddList(this.state.listNameValue)} 
+            onClick={() => {this.props.handleAddList(this.state.listNameValue); this.setState({listNameValue: ''});}} 
             width="auto" 
             type='submit'
             className="add" 

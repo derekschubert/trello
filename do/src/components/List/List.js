@@ -5,7 +5,8 @@ import './List.css'
 
 import Card from '../Card';
 import Button from '../Button';
-import AddCard from '../AddCard'
+import AddCard from '../AddCard';
+import Modals from '../Modal/Modals';
 
 export default class List extends Component {
   determineStyle = (provided) => {
@@ -29,7 +30,7 @@ export default class List extends Component {
       });
 
       return orderedCards.map((card, index) => (
-        <Card {...card} key={"card-" + card.shortid} index={index} onClick={onCardClick} />
+        <Card {...card} key={"card-" + card.shortid} listId={list.shortid} index={index} onClick={onCardClick} />
       ));
     } else {
       return null;
@@ -38,7 +39,7 @@ export default class List extends Component {
 
   render() {
     let { name, shortid } = this.props.list;
-    let { cards, position } = this.props;
+    let { cards, position, actions } = this.props;
     let hasCards = cards.length ? true : false;
 
     return (
@@ -54,7 +55,15 @@ export default class List extends Component {
               {...provided.dragHandleProps}
             >
               <h3>{name}</h3>
-              <Button icon="more" iconSize="18px" iconColor="#333" background="none" hoverColor="dark" />
+              <Button refId={'btn-list-actions-' + shortid} 
+                icon="more" 
+                iconSize="18px" 
+                iconColor="#333" 
+                background="none" 
+                hoverColor="dark"
+              >
+                <Modals.ListActions list={this.props.list} actions={actions} />
+              </Button>
             </div>
 
             <div className="cards-wrapper">
