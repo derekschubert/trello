@@ -130,10 +130,11 @@ export default class AddList extends Component {
   render() {
     let { active } = this.state;
 
-    if (active) {
-      return this.renderActive();
-    } else {
-      return this.renderInactive();
-    }
+    return (
+      <div className='add-list-wrapper'>
+        {active && this.renderActive()}
+        {!active && this.renderInactive()}
+      </div>
+    );
   }
 }

@@ -1,4 +1,5 @@
 .list {
+    min-width: 272px;
     width: 272px;
     display: flex;
     flex-direction: column;

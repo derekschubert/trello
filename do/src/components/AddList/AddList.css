@@ -1,4 +1,10 @@
+.add-list-wrapper {
+  min-width: 280px;
+}
+
 .add-list {
+    width: 272px;
+    min-width: 272px;
     height: 40px;
     border-radius: 3px;
     color: rgba(255, 255, 255, 0.8);
@@ -15,7 +21,7 @@
 
 .adding-list {
     height: 80px;
-    width: 100%;
+    width: 272px;
     border-radius: 3px;
     background-color: rgb(223, 227, 230);
     display: grid;
