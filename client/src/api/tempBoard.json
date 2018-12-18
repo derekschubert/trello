@@ -1,0 +1,63 @@
+{
+    "title": "Do",
+    "team": {
+        "id": 1,
+        "name": "Starbound"
+    },
+    "visibility": "Team Visible",
+    "members": [
+        {
+            "id": 1,
+            "name": "Derek",
+            "hasFavorited": true
+        }
+    ],
+    "owner": 1,
+    "moderators": [],
+    "background": {
+        "mode": "color",
+        "url": "",
+        "color": "#48a999"
+    },
+    "labels": [
+        {
+            "shortcut": 49,
+            "name": "Important",
+            "color": "#e53737"
+        }, {
+            "shortcut": 50,
+            "name": "Finished!",
+            "color": "#18af78"
+        }
+    ],
+    "lists": [
+        {
+            "id": 1,
+            "name": "Finished",
+            "position": 0,
+            "cards": [],
+            "color": "#dfe3e6"
+        }, {
+            "id": 2,
+            "name": "Todo",
+            "position": 1,
+            "cards": [2, 3],
+            "color": "#dfe3e6"
+        }
+    ],
+    "cards": [
+        {
+            "id": 1,
+            "name": "Initial setup of Do project",
+            "description": ""
+        }, {
+            "id": 2,
+            "name": "Build JSON format",
+            "description": "Fully build out the structure of information that is passed to and from the API."
+        }, {
+            "id": 3,            
+            "name": "Build static front end in React",
+            "description": ""
+        }
+    ]
+}

@@ -14,7 +14,7 @@ export default {
     },
     getAllBoards: async () => {
       const boards = await Board.find();
-      await timeout(2000);
+      // await timeout(2000);
       return boards;
     },
     getBoard: async (parent, args, context, info) => {
@@ -30,6 +30,29 @@ export default {
         new Board(b).save()
       ))
     ),
+    createBoard: async (parent, args, context, info) => {
+      let statusMessage = '';
+      let boardArgs = { ...args };
+
+      boardArgs.team = {
+        id: '1',
+        name: 'Starbound',
+        members: '1',
+      };
+
+      boardArgs.visibility = 'Private'
+
+      const board = await new Board(boardArgs).save((err) => {
+        if (err) {
+          console.err(err);
+          statusMessage = err;
+        } else {
+          statusMessage = 'Success!';
+        }
+      });
+
+      return statusMessage;
+    },
     updateLists: async (parent, args, context, info) => {
       let statusMessage;
 
@@ -51,5 +74,33 @@ export default {
     resetUserDB: async () => (
       User.remove({})
     ),
+    deleteBoard: async (parent, args, context, info) => {
+      let statusMessage;
+
+      let _ = await Board.remove({ shortid: args.boardId }, (err) => {
+        if (err) {
+          statusMessage = 'ERROR';
+          console.log(err);
+        } else {
+          statusMessage = 'success';
+          console.log('Successfully deleted board');
+        }
+      });
+
+      return statusMessage;
+    },
+    updateBoardName: async (parent, args, context, info) => {
+      let statusMessage;
+
+      let board = await Board.findOne({ shortid: args.boardId }, (err) => {
+        statusMessage = 'success';
+        if (err) statusMessage = `${err}`;
+      });
+
+      board.name = args.name;
+
+      await board.save();
+      return statusMessage;
+    },
   },
 };

@@ -1,0 +1,16 @@
+.user-icon {
+    border-radius: 50%;
+    background: #dfe3e6;
+    width: 32px;
+    height: 32px;
+    color: #17394d;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.user-icon:hover {
+    background: #c2ccd1;
+    cursor: pointer;
+}

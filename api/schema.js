@@ -68,11 +68,13 @@ type Query {
 }
 
 type Mutation {
-  createBoard(name: String!, owner: String!): Board!
+  createBoard(name: String!, owner: String!, color: String!, shortid: String!, teamid: String!): String!
   createUser(username: String!, first_name: String!, last_name: String!, email: String!): User!
   createExampleBoards(name: String): [Board!]!
   resetBoardDB: [Board]
   resetUserDB: [User]
   updateLists(boardId: String!, cards: [CardInput!], lists: [ListInput!], listOrder: [String!]): String!
+  deleteBoard(boardId: String!): String!
+  updateBoardName(boardId: String!, name: String!): String!
 }
 `;
