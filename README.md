@@ -39,7 +39,7 @@
 * _Implement Hooks*_
 
 ## Development Phases
-1. --> **Recreation** - Recreate existing features
+--> 1. **Recreation** - Recreate existing features
 1. **Extend** - Add useful features
    * Board templates
    * Nested boards
