@@ -37,3 +37,11 @@
 * Clean up and modularize Mutations
 * _Implement Context for Board Data*_
 * _Implement Hooks*_
+
+## Development Phases
+1. -> *Recreation* - Recreate existing features
+1. *Extend* - Add useful features
+   * Board templates
+   * Nested boards
+   * Tree overview of Board(s)
+1. *Integrate* - Assigned boards and cards assign tasks on 'Do' (future project)
