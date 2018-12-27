@@ -17,7 +17,7 @@
 ![Trello Modals GIF](https://firebasestorage.googleapis.com/v0/b/derekschubert-1e55f.appspot.com/o/github-resources%2Ftrello%2Fmodals.gif?alt=media&token=682ac0ad-c140-4b4c-950b-891d5ff8ad9e "Trello Modals")
 
 ## Upcoming Features
-*For a full list and current development status, please see the Projects tab!*
+*For a full list and current development status, please see the [Projects tab](https://github.com/derekschubert/trello/projects/1 "Trello Project Board")!*
 * Project
   * Responsive CSS for non-desktop displays
   * User Authentication & Authorization
