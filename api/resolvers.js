@@ -18,9 +18,7 @@ export default {
       return boards;
     },
     getBoard: async (parent, args, context, info) => {
-      console.log('Board id:', args.id);
       const board = await Board.find({ shortid: args.id });
-      console.log('Results:', board);
       return board[0];
     },
   },
@@ -40,7 +38,7 @@ export default {
         members: '1',
       };
 
-      boardArgs.visibility = 'Private'
+      boardArgs.visibility = 'Private';
 
       const board = await new Board(boardArgs).save((err) => {
         if (err) {
@@ -75,15 +73,12 @@ export default {
       User.remove({})
     ),
     deleteBoard: async (parent, args, context, info) => {
-      let statusMessage;
+      let statusMessage = 'success';
 
       let _ = await Board.remove({ shortid: args.boardId }, (err) => {
         if (err) {
           statusMessage = 'ERROR';
           console.log(err);
-        } else {
-          statusMessage = 'success';
-          console.log('Successfully deleted board');
         }
       });
 

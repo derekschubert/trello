@@ -416,7 +416,7 @@ class Board extends Component {
         onDragStart={this.onDragStart}
         onDragUpdate={this.onDragUpdate}
         onDragEnd={this.onDragEnd}>
-        <div className="board">
+        <div className="board" style={{ backgroundColor: this.state.color }}>
           <BoardHeader />
           <Mutation mutation={UPDATE_LISTS}>
             {(updateLists) => {

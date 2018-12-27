@@ -19,7 +19,7 @@ type Team {
 type Board {
   shortid: String!
   id: String!
-  color: String
+  color: String!
   team: Team!
   visibility: String!
   name: String!

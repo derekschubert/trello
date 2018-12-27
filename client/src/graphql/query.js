@@ -6,6 +6,7 @@ const GET_BOARD = gql`
         getBoard(id: $id) {
             name
             shortid
+            color
             team {
                 name
             }
@@ -26,4 +27,14 @@ const GET_BOARD = gql`
     }
 `;
 
-export { GET_BOARD };
+const GET_BOARDS = gql`
+  {
+    getAllBoards {
+      name
+      shortid
+      color
+    }
+  }
+`;
+
+export { GET_BOARD, GET_BOARDS };

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { gql } from 'apollo-boost';
-import { graphql } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 import './Boards.css';
 
 import BoardCard from '../../components/BoardCard';
@@ -10,15 +10,7 @@ import BoardHeader from '../../components/BoardHeader';
 import Icon from '../../components/Icon';
 import Button from '../../components/Button';
 
-const GET_BOARDS = gql`
-  {
-    getAllBoards {
-      name
-      shortid
-      color
-    }
-  }
-`;
+import { GET_BOARDS } from '../../graphql/query';
 
 class Boards extends Component {
   constructor(props) {
@@ -79,21 +71,26 @@ class Boards extends Component {
   }
 
   render () {
-    let { boards } = this.props;
-
     return (
-      <div className='boards-page'>
-        <BoardHeader backgroundColor='#026aa7' />
-        <div className='content'>
-          {boards.loading && <Boards.RenderLoading />}
-          {!boards.loading && <Boards.Render boards={boards.getAllBoards} createNewBoard={this.handleCreateNewBoard} />}
-          {this.state.createNewBoardIsActive && <CreateNewBoard close={() => this.handleCreateNewBoard(false)} />}
-        </div>
-      </div>
+      <Query query={GET_BOARDS}>
+        {({error, loading, data}) => {
+          console.log('Query data:', data);
+
+          if (error) throw error;
+          else return (
+            <div className='boards-page'>
+              <BoardHeader backgroundColor='#026aa7' />
+              <div className='content'>
+                {loading && <Boards.RenderLoading />}
+                {!loading && <Boards.Render boards={data.getAllBoards} createNewBoard={this.handleCreateNewBoard} />}
+                {this.state.createNewBoardIsActive && <CreateNewBoard close={() => this.handleCreateNewBoard(false)} />}
+              </div>
+            </div>
+          );
+        }}
+      </Query>
     );
   };
 };
 
-export default graphql(GET_BOARDS, {
-  name: 'boards'
-})(Boards);
+export default Boards;
