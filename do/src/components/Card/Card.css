@@ -1,0 +1,20 @@
+.card {
+    height: 32px;
+    width: calc(100% - 8px);
+    margin: 0 4px;
+    border-radius: 3px;
+    box-shadow: rgba(9, 45, 66, 0.25) 0px 1px 0px 0px;
+    color: #333;
+    display: grid;
+    grid-template-columns: auto 32px;
+    align-items: center;    
+}
+
+.card > span {
+    font-size: 14px;
+    padding-left: 8px;
+}
+
+.card > a {
+
+}
