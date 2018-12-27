@@ -48,6 +48,7 @@
 1. **Integrate** - Assigned boards and cards assign tasks on 'Do' (future project)
 
 <div align="center">
-  <h3>Thanks for checking out the project!</h3>
+  <br /><br />
+  <h1>Thanks for checking out the project!</h1>
   <img src="https://firebasestorage.googleapis.com/v0/b/derekschubert-1e55f.appspot.com/o/github-resources%2FGithub%20Logo.png?alt=media&token=0a11a654-6c4a-4421-ad09-292d7cc2aa4c" alt="Github Derek Schubert" title="Thank you <3"/>
 </div>
